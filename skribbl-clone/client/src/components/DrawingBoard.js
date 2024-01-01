@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:300'); // Replace with your server URL
+const socket = io('http://localhost:3001'); // Replace with your server URL
 
 function DrawingBoard() {
   const canvasRef = useRef(null);
