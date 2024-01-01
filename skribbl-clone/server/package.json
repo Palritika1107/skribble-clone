@@ -1,0 +1,22 @@
+{
+    "name": "skribbl-clone-server",
+    "version": "1.0.0",
+    "description": "Skribbl.io Clone Server",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "keywords": [
+        "skribbl",
+        "clone",
+        "server"
+    ],
+    "author": "Your Name",
+    "license": "MIT",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "http": "0.0.1-security",
+        "socket.io": "^4.0.1"
+    }
+}
