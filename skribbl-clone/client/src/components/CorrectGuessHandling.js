@@ -9,18 +9,13 @@ function CorrectGuessHandling() {
 
   useEffect(() => {
     // Listen for updates on correct guesses from the server
-    socket.on('correctGuess', (player) => {
-      setCorrectGuess(`Player ${player} correctly guessed the word!`);
-      
-      // Clear the correct guess message after a delay
-      setTimeout(() => {
-        setCorrectGuess('');
-      }, 5000); // Adjust the delay as needed
+    socket.on('updateCorrectGuess', (guess) => {
+      setCorrectGuess(guess);
     });
 
     // Cleanup function
     return () => {
-      socket.off('correctGuess');
+      socket.off('updateCorrectGuess');
     };
   }, []);
 
@@ -28,7 +23,7 @@ function CorrectGuessHandling() {
     <div>
       {correctGuess && (
         <div>
-          <h2>Correct Guess!</h2>
+          <h2>Correct Guess</h2>
           <p>{correctGuess}</p>
         </div>
       )}

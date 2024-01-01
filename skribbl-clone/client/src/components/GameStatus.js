@@ -5,10 +5,10 @@ import io from 'socket.io-client';
 const socket = io('http://localhost:3001'); // Replace with your server URL
 
 function GameStatus() {
-  const [gameStatus, setGameStatus] = useState(null);
+  const [gameStatus, setGameStatus] = useState('');
 
   useEffect(() => {
-    // Listen for updates on game status from the server
+    // Listen for updates on the game status from the server
     socket.on('gameStatus', (status) => {
       setGameStatus(status);
     });
@@ -21,7 +21,7 @@ function GameStatus() {
 
   return (
     <div>
-      {gameStatus !== null && (
+      {gameStatus && (
         <div>
           <h2>Game Status</h2>
           <p>{gameStatus}</p>

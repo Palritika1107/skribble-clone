@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3001'); // Replace with your server URL
+const socket = io('http://localhost:300'); // Replace with your server URL
 
 function DrawingBoard() {
   const canvasRef = useRef(null);
@@ -28,6 +28,7 @@ function DrawingBoard() {
       isDrawing = false;
       context.beginPath(); // Start a new path for the next stroke
     };
+
 
     const draw = (event) => {
       if (!isDrawing) return;
@@ -63,20 +64,29 @@ function DrawingBoard() {
       context.moveTo(data.x, data.y);
     });
 
+    socket.on('clearDrawing', handleClearDrawing);
+
     // Cleanup function
     return () => {
       canvas.removeEventListener('mousedown', startDrawing);
       canvas.removeEventListener('mousemove', draw);
       canvas.removeEventListener('mouseup', stopDrawing);
       canvas.removeEventListener('mouseout', stopDrawing);
-      socket.off('draw');
+      socket.off('clearDrawing');
     };
   }, []);
+
+  const handleClearDrawing = () => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+  };
 
   return (
     <div>
       <h2>Drawing Board</h2>
       <canvas ref={canvasRef} width={800} height={500} style={{ border: '1px solid #000000' }}></canvas>
+      <button onClick={handleClearDrawing}>Clear Drawing Board</button>
     </div>
   );
 }

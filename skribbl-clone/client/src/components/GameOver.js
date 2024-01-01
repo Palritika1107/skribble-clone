@@ -6,13 +6,11 @@ const socket = io('http://localhost:3001'); // Replace with your server URL
 
 function GameOver() {
   const [gameOver, setGameOver] = useState(false);
-  const [finalScores, setFinalScores] = useState([]);
 
   useEffect(() => {
-    // Listen for updates on game over from the server
-    socket.on('gameOver', (scores) => {
-      setGameOver(true);
-      setFinalScores(scores);
+    // Listen for updates on the game over status from the server
+    socket.on('gameOver', (status) => {
+      setGameOver(status);
     });
 
     // Cleanup function
@@ -25,15 +23,8 @@ function GameOver() {
     <div>
       {gameOver && (
         <div>
-          <h2>Game Over!</h2>
-          <h3>Final Scores:</h3>
-          <ul>
-            {finalScores.map((score) => (
-              <li key={score.id}>
-                Player {score.id}: {score.score} points
-              </li>
-            ))}
-          </ul>
+          <h2>Game Over</h2>
+          <p>The game has ended. Thank you for playing!</p>
         </div>
       )}
     </div>

@@ -9,20 +9,24 @@ function CurrentWord() {
 
   useEffect(() => {
     // Listen for updates on the current word from the server
-    socket.on('currentWord', (word) => {
+    socket.on('updateCurrentWord', (word) => {
       setCurrentWord(word);
     });
 
     // Cleanup function
     return () => {
-      socket.off('currentWord');
+      socket.off('updateCurrentWord');
     };
   }, []);
 
   return (
     <div>
-      <h2>Current Word</h2>
-      <p>{currentWord}</p>
+      {currentWord && (
+        <div>
+          <h2>Current Word</h2>
+          <p>{currentWord}</p>
+        </div>
+      )}
     </div>
   );
 }

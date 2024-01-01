@@ -16,7 +16,6 @@ import WordListSelection from './components/WordListSelection';
 import PlayerTurnMessage from './components/PlayerTurnMessage';
 import TurnTimer from './components/TurnTimer';
 import WordHint from './components/WordHint';
-import ClearDrawingBoard from './components/ClearDrawingBoard';
 import PlayerConnectionStatus from './components/PlayerConnectionStatus';
 import RoundEnd from './components/RoundEnd';
 
@@ -43,7 +42,6 @@ function App() {
       <WordHint />
       <WordListSelection />
       <DrawingBoard />
-      <ClearDrawingBoard />
       <WordList />
       <PlayerList />
       <GameStatus />

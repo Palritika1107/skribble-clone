@@ -33,6 +33,10 @@ class Game {
       this.gameStatus = 'gameover';
       this.sendGameStatus();
     }
+
+    clearDrawingBoard() {
+      this.emitToAll('clearDrawing');
+    }
   
     startTurnTimer() {
       const intervalId = setInterval(() => {

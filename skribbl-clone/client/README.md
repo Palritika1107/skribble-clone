@@ -68,3 +68,39 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+skribbl-clone/
+|-- client/
+|   |-- public/
+|   |   |-- index.html
+|   |-- src/
+|   |   |-- components/
+|   |   |   |-- CorrectGuessHandling.js
+|   |   |   |-- CurrentWord.js
+|   |   |   |-- DrawingBoard.js
+|   |   |   |-- GameOver.js
+|   |   |   |-- GameStatus.js
+|   |   |   |-- RestartGame.js
+|   |   |   |-- RoundEnd.js
+|   |   |   |-- Scoring.js
+|   |   |   |-- Timer.js
+|   |   |   |-- TurnTimer.js
+|   |   |   |-- WaitingScreen.js
+|   |   |   |-- WordHint.js
+|   |   |   |-- WordList.js
+|   |   |   |-- WordListSelection.js
+|   |   |-- App.js
+|   |   |-- index.js
+|   |   |-- App.css
+|   |-- package.json
+|   |-- ...
+|-- server/
+|   |-- Game.js
+|   |-- index.js
+|   |-- package.json
+|   |-- ...
+|-- package.json
+|-- package-lock.json
+|-- README.md
+|-- ...
