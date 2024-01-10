@@ -13,12 +13,27 @@ const io = require("socket.io")(server, {
 });
 
 server.listen(PORT);
-const game = new Game();
+const game = new Game(io);
 
 io.on('connection', (socket) => {
-  console.log('A user connected');
+  // console.log('A user connected');
+
+  socket.on('newPlayer', (player) => {
+    game.addPlayer(player);
+
+    // Send initial game state to the player
+    socket.emit('initialGameState', {
+      players: game.players,
+      currentPlayer: game.players[game.currentPlayerIndex],
+      currentWord: game.words[game.currentWordIndex],
+      timer: game.timer,
+    });
+
+    io.emit('updatePlayerList', game.players);
+  });
 
   socket.on('submitName', (name) => {
+    console.log("A Player connected: ", name);
     game.addPlayer({ id: socket.id, name, socket });
     updateGameStatus();
   });
@@ -42,7 +57,6 @@ function updateGameStatus() {
   io.emit('updatePlayerList', playerList);
 
   if (game.players.length >= 2) {
-    game.sendGameStatus();
     io.emit('showStartGameButton', true);
   } else {
     io.emit('showStartGameButton', false);

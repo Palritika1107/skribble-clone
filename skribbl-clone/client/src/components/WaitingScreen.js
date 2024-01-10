@@ -41,6 +41,7 @@ function WaitingScreen() {
 
   const handleStartGame = () => {
     // Emit a request to start the game to the server
+    console.log("hanlded start game in client")
     socket.emit('startGame');
   };
 
@@ -48,7 +49,7 @@ function WaitingScreen() {
     <div>
       {waiting && (
         <div>
-          <h2>Waiting for Players</h2>
+          <h2>Players Lobby</h2>
           {!isNameSubmitted ? (
             <form onSubmit={handleSubmitName}>
               <label>
@@ -63,8 +64,8 @@ function WaitingScreen() {
             </form>
           ) : (
             <div>
-              <p>Waiting for other players...</p>
-              {startGameVisible && <button onClick={handleStartGame}>Start Game</button>}
+              {startGameVisible ? <button onClick={handleStartGame}>Start Game</button> 
+              : <p>Waiting for other players...</p>}
             </div>
           )}
         </div>

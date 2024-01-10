@@ -1,37 +1,50 @@
 // server/Game.js
 class Game {
-    constructor() {
-      this.players = [];
-      this.words = [];
-      this.currentWordIndex = 0;
-      this.currentPlayerIndex = 0;
-      this.gameStatus = 'waiting';
-      this.timer = 60; // Initial timer value in seconds
+  constructor(io) {
+    this.io = io;
+    this.players = [];
+    this.currentPlayerIndex = 0;
+    this.currentWordIndex = 0;
+    this.words = ["apple", "banana", "cherry"]; // Add more words as needed
+    this.timer = 60;
+    this.gameStarted = false;
+  }
+
+  addPlayer(player) {
+    this.players.push(player);
+
+    // Check if the required number of players is reached to start the game
+    // if (this.players.length === 2 && this.gameStarted) {
+    //   this.startGame();
+    // }
+  }
+  removePlayer(playerId) {
+    const index = this.players.findIndex((player) => player.id === playerId);
+    if (index !== -1) {
+      this.players.splice(index, 1);
     }
-  
-    addPlayer(player) {
-      this.players.push(player);
+
+    // Check if there are still players in the game
+    if (this.players.length === 0) {
+      this.gameStarted = false;
     }
-  
-    removePlayer(playerId) {
-      this.players = this.players.filter((player) => player.id !== playerId);
-    }
+  }
   
     updatePlayerList() {
       return this.players.map(({ id, name }) => ({ id, name }));
     }
   
     startGame() {
-      this.gameStatus = 'playing';
-      this.shuffleWords();
-      this.sendWordList();
-      this.sendGameStatus();
+      this.io.emit('gameStarted', true);
+      this.sendPlayerTurn();
+      this.sendNewWord();
       this.startTurnTimer();
     }
   
     endGame() {
-      this.gameStatus = 'gameover';
-      this.sendGameStatus();
+      // Handle end of the game logic
+      console.log('Game ended');
+      this.gameStarted = false;
     }
 
     clearDrawingBoard() {
@@ -53,7 +66,7 @@ class Game {
         clearInterval(intervalId);
       }, this.timer * 1000);
     }
-  
+
     nextTurn() {
       this.currentWordIndex++;
       this.currentPlayerIndex++;
@@ -66,12 +79,17 @@ class Game {
         this.endGame();
       } else {
         this.sendPlayerTurn();
-        this.sendWordHint();
-        this.timer = 60; // Reset the timer for the next turn
+        this.sendNewWord();
+        this.timer = 60;
         this.startTurnTimer();
       }
     }
   
+    sendNewWord() {
+      const newWord = this.words[this.currentWordIndex];
+      this.io.emit('updateCurrentWord', newWord);
+    }
+
     shuffleWords() {
       // Shuffle the array of words (Fisher-Yates algorithm)
       for (let i = this.words.length - 1; i > 0; i--) {
@@ -93,16 +111,13 @@ class Game {
   
     sendPlayerTurn() {
       const currentPlayer = this.players[this.currentPlayerIndex].name;
-      this.emitToAll('playerTurn', currentPlayer);
+      this.io.emit('playerTurn', currentPlayer);
     }
   
     sendTimerUpdate() {
       this.emitToAll('updateTimer', this.timer);
     }
-  
-    sendGameStatus() {
-      this.emitToAll('gameStatus', this.gameStatus);
-    }
+
   
     emitToAll(event, data) {
       this.players.forEach((player) => {
