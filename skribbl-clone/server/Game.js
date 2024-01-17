@@ -6,7 +6,7 @@ class Game {
     this.currentPlayerIndex = 0;
     this.currentWordIndex = 0;
     this.words = ["apple", "banana", "cherry"]; // Add more words as needed
-    this.timer = 60;
+    this.timer = 20;
     this.gameStarted = false;
   }
 
@@ -52,22 +52,24 @@ class Game {
     }
   
     startTurnTimer() {
+      // this.io.emit('roundUpdate')
       const intervalId = setInterval(() => {
         this.timer--;
-  
+        
         if (this.timer === 0) {
           this.nextTurn();
         }
-  
+        console.log(this.timer)
         this.sendTimerUpdate();
       }, 1000);
   
       setTimeout(() => {
         clearInterval(intervalId);
-      }, this.timer * 1000);
+      }, this.timer * 10000);
     }
 
     nextTurn() {
+      console.log("triggering next turn");
       this.currentWordIndex++;
       this.currentPlayerIndex++;
   
@@ -77,10 +79,11 @@ class Game {
   
       if (this.currentWordIndex >= this.words.length) {
         this.endGame();
+        return;
       } else {
         this.sendPlayerTurn();
         this.sendNewWord();
-        this.timer = 60;
+        this.timer = 20;
         this.startTurnTimer();
       }
     }

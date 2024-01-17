@@ -19,6 +19,7 @@ io.on('connection', (socket) => {
   // console.log('A user connected');
 
   socket.on('newPlayer', (player) => {
+    socket.join('roomName')
     game.addPlayer(player);
 
     // Send initial game state to the player
@@ -48,6 +49,16 @@ io.on('connection', (socket) => {
     updateGameStatus();
     console.log('A user disconnected');
   });
+
+  socket.on('draw', (data) => {
+    io.to('roomName').emit('draw', data); // Broadcast to all clients in the room
+  });
+
+  socket.on('newTurn',() =>{
+    updateGameStatus()
+    // updateGameStatus();
+  })
+
 });
 
 function updateGameStatus() {

@@ -57,6 +57,13 @@ function DrawingBoard({ username, players }) {
       });
     };
 
+    socket.on('correctGuess', () => {
+      // Handle the logic for correct guesses
+      console.log('captured Correct guess!');
+
+      // You might want to update the UI, reset the drawing board, etc.
+    });
+
     // Event listeners for drawing
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
@@ -101,6 +108,7 @@ function DrawingBoard({ username, players }) {
       socket.off('clearDrawing');
       socket.off('updatePlayerTurn');
       socket.off('updateCurrentWord');
+      socket.off('correctGuess');
     };
   }, [isDrawing, username]);
 
