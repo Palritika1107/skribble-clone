@@ -52,7 +52,7 @@ class Game {
     }
   
     startTurnTimer() {
-      // this.io.emit('roundUpdate')
+      this.io.emit('roundUpdate')
       const intervalId = setInterval(() => {
         this.timer--;
         
