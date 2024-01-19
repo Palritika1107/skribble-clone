@@ -72,7 +72,6 @@ function App() {
           <PlayerList />
           
           <PlayerTurnMessage />
-          <TurnTimer />
           <CurrentWord />
           <CorrectGuessHandling />
           <WordHint />

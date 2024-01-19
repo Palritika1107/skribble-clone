@@ -1,34 +1,36 @@
-// src/components/Scoring.js
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
 const socket = io('http://localhost:3001'); // Replace with your server URL
 
 function Scoring() {
-  const [scores, setScores] = useState([]);
+  const [players, setPlayers] = useState([]);
 
   useEffect(() => {
-    // Listen for updates on player scores from the server
-    socket.on('updateScores', (updatedScores) => {
-      setScores(updatedScores);
+    // Listen for updates including correctWordGuess and scores from the server
+    socket.on('correctWordGuess', (updatedPlayers) => {
+      // Update the player scores
+      console.log("player", updatedPlayers)
+      //setPlayers(updatedPlayers);
     });
 
-    // Cleanup function
+    // Cleanup event listener on component unmount
     return () => {
-      socket.off('updateScores');
+      socket.off('correctWordGuess');
     };
   }, []);
 
+  // Render UI using the players and their scores
   return (
     <div>
-      <h2>Player Scores</h2>
-      <ul>
-        {scores.map((player) => (
-          <li key={player.name}>
-            {player.name}: {player.score} points
+      <p>Players and Scores:</p>
+      {/* <ul>
+        {players.map((player) => (
+          <li key={player.id}>
+            {player.username}: {player.score}
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 }

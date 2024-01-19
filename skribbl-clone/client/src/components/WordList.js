@@ -19,9 +19,10 @@ function WordList() {
     };
   }, []);
 
-  const handleGuess = (guess) => {
+  const handleGuess = (event) => {
     // Send the player's guess to the server
-    socket.emit('guess', guess);
+    event.preventDefault();
+    socket.emit('guess', event.target.guessedWord.value);
   };
 
   return (
@@ -29,12 +30,17 @@ function WordList() {
       <h2>Guess the Word</h2>
       <p>Current Word: {currentWord}</p>
       {/* Add UI for inputting and submitting guesses */}
-      <input
-        type="text"
-        placeholder="Your Guess"
-        onChange={(e) => handleGuess(e.target.value)}
-      />
-      <button onClick={() => handleGuess()}>Submit Guess</button>
+      <form onSubmit={handleGuess}>
+        <input
+          type="text"
+          placeholder="Your Guess"
+          id="guessedWord"
+          name="guessedWord"
+        />
+        <button type='submit'>Submit Guess</button>
+
+      </form>
+      
     </div>
   );
 }

@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
 
   socket.on('submitName', (name) => {
     console.log("A Player connected: ", name);
-    game.addPlayer({ id: socket.id, name, socket });
+    game.addPlayer({ id: socket.id, name, score:0, socket });
     updateGameStatus();
   });
 
@@ -57,6 +57,12 @@ io.on('connection', (socket) => {
   socket.on('newTurn',() =>{
     updateGameStatus()
     // updateGameStatus();
+  })
+
+  socket.on('guess',(guessedWord)=>{
+    //console.log(guessedWord);
+    game.handleWordGuess(guessedWord)
+    updateGameStatus();
   })
 
 });

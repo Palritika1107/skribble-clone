@@ -8,6 +8,8 @@ class Game {
     this.words = ["apple", "banana", "cherry"]; // Add more words as needed
     this.timer = 20;
     this.gameStarted = false;
+    this.currentWord = ''
+    this.currentPlayer =''
   }
 
   addPlayer(player) {
@@ -31,7 +33,7 @@ class Game {
   }
   
     updatePlayerList() {
-      return this.players.map(({ id, name }) => ({ id, name }));
+      return this.players.map(({ id, name, score }) => ({ id, name , score}));
     }
   
     startGame() {
@@ -89,8 +91,8 @@ class Game {
     }
   
     sendNewWord() {
-      const newWord = this.words[this.currentWordIndex];
-      this.io.emit('updateCurrentWord', newWord);
+      this.newWord = this.words[this.currentWordIndex];
+      this.io.emit('updateCurrentWord', this.newWord);
     }
 
     shuffleWords() {
@@ -113,12 +115,42 @@ class Game {
     }
   
     sendPlayerTurn() {
-      const currentPlayer = this.players[this.currentPlayerIndex].name;
-      this.io.emit('playerTurn', currentPlayer);
+      this.currentPlayer = this.players[this.currentPlayerIndex].name;
+      this.io.emit('playerTurn', this.currentPlayer);
     }
   
     sendTimerUpdate() {
       this.emitToAll('updateTimer', this.timer);
+    }
+
+    handleWordGuess(guessedWord){
+      var updateScores = [];
+      var that = this;
+      if (guessedWord.toLowerCase() === this.newWord.toLowerCase()) {
+        that.players.map(({name,score},idx)=>{
+          if (name === this.currentPlayer){
+            let obj = {
+              name: name,
+              score: score+1
+            }
+            updateScores.push(obj)
+            that.players[idx].score = score + 1
+          }
+        })
+        //let updateScore = this.players
+        //console.log(this.players)
+        //console.log(that.players)
+        console.log(updateScores)
+        that.emitToAll('correctWordGuess',that.players)
+          // Send the updated player list with scores to all clients
+
+      }
+      else {
+        console.log("wrong guess")
+        //this.emitToAll('correctWordGuess', { isCorrect: false });
+        //this.io.to('roomName').emit('updateGameStatus', { message: `${currentPlayer.username} guessed incorrectly` });
+      }
+
     }
 
   

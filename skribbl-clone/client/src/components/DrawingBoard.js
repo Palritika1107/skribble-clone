@@ -114,9 +114,9 @@ function DrawingBoard({ username, players }) {
 
   return (
     <div>
-      <h2>{`Player: ${username}`}</h2>
+      {/* <h2>{`Player: ${username}`}</h2>
       <h3>{`Current Player: ${currentPlayer}`}</h3>
-      <h3>{`Current Word: ${currentWord}`}</h3>
+      <h3>{`Current Word: ${currentWord}`}</h3> */}
       <canvas ref={canvasRef} width={800} height={500} style={{ border: '1px solid #000000' }}></canvas>
       <button onClick={handleClearDrawing}>Clear Drawing Board</button>
     </div>
