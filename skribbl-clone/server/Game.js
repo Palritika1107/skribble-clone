@@ -56,6 +56,8 @@ class Game {
       })
 
       this.io.emit('roundEnd', [player])
+      this.io.emit('showRestartButton', true)
+      this.io.emit('gameOver', true)
       this.gameStarted = false;
     }
 
@@ -157,7 +159,7 @@ class Game {
           }
         });
         this.io.emit('correctWordGuess', updateScores);
-        this.nextTurn()
+        //this.nextTurn()
       }
       else {
         this.players.map(({id, name,score},idx)=>{
