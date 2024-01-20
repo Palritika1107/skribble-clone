@@ -6,13 +6,13 @@ const socket = io('http://localhost:3001'); // Replace with your server URL
 
 function RoundEnd() {
   const [roundEnd, setRoundEnd] = useState(false);
-  const [winners, setWinners] = useState([]);
+  const [winner, setWinner] = useState([]);
 
   useEffect(() => {
     // Listen for updates on round end from the server
-    socket.on('roundEnd', (roundWinners) => {
+    socket.on('roundEnd', (player) => {
       setRoundEnd(true);
-      setWinners(roundWinners);
+      setWinner(player);
     });
 
     // Cleanup function
@@ -26,12 +26,7 @@ function RoundEnd() {
       {roundEnd && (
         <div>
           <h2>Round Over!</h2>
-          <p>Winners:</p>
-          <ul>
-            {winners.map((winner) => (
-              <li key={winner}>{winner}</li>
-            ))}
-          </ul>
+          <p>Winner: {winner}</p>
         </div>
       )}
     </div>

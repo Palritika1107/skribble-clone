@@ -46,7 +46,16 @@ class Game {
   
     endGame() {
       // Handle end of the game logic
-      console.log('Game ended');
+      let tempScore = 0
+      let player = ''
+      this.players.map(({id, name,score},idx)=>{
+        if (tempScore < score){
+          tempScore = score
+          player = name
+        }
+      })
+
+      this.io.emit('roundEnd', [player])
       this.gameStarted = false;
     }
 
@@ -148,6 +157,7 @@ class Game {
           }
         });
         this.io.emit('correctWordGuess', updateScores);
+        this.nextTurn()
       }
       else {
         this.players.map(({id, name,score},idx)=>{
