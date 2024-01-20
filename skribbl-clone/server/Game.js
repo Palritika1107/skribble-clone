@@ -70,7 +70,8 @@ class Game {
       const intervalId = setInterval(() => {
         this.timer--;
         
-        if (this.timer === 0) {
+        if (this.timer <= 0) {
+          clearInterval(intervalId);
           this.nextTurn();
         }
         console.log(this.timer)
@@ -79,7 +80,8 @@ class Game {
   
       setTimeout(() => {
         clearInterval(intervalId);
-      }, this.timer * 20000);
+        this.nextTurn();
+      }, this.timer * 1000);
     }
 
     nextTurn() {
