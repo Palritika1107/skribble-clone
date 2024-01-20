@@ -13,9 +13,14 @@ function GameOver() {
       setGameOver(status);
     });
 
+    socket.on('roundStart', ()=>{
+      setGameOver(false)
+    })
+
     // Cleanup function
     return () => {
       socket.off('gameOver');
+      socket.off('roundStart')
     };
   }, []);
 

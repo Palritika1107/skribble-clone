@@ -65,6 +65,11 @@ io.on('connection', (socket) => {
     updateGameStatus();
   })
 
+  socket.on('restartGame',()=>{
+    game.restartGame()
+    updateGameStatus()
+  })
+
 });
 
 function updateGameStatus() {

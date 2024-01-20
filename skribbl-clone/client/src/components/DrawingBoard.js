@@ -95,10 +95,10 @@ function DrawingBoard({ username, players }) {
     });
 
     // Listen for updates on the current word from the server
-    socket.on('updateCurrentWord', (newWord) => {
-      setCurrentWord(newWord);
-      console.log(`Current word: ${newWord}`);
-    });
+    // socket.on('updateCurrentWord', (newWord) => {
+    //   setCurrentWord(newWord);
+    //   console.log(`Current word: ${newWord}`);
+    // });
 
     return () => {
       canvas.removeEventListener('mousedown', startDrawing);
@@ -107,7 +107,7 @@ function DrawingBoard({ username, players }) {
       canvas.removeEventListener('mouseout', stopDrawing);
       socket.off('clearDrawing');
       socket.off('updatePlayerTurn');
-      socket.off('updateCurrentWord');
+      // socket.off('updateCurrentWord');
       socket.off('correctGuess');
     };
   }, [isDrawing, username]);

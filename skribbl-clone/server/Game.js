@@ -79,7 +79,7 @@ class Game {
   
       setTimeout(() => {
         clearInterval(intervalId);
-      }, this.timer * 10000);
+      }, this.timer * 20000);
     }
 
     nextTurn() {
@@ -159,6 +159,7 @@ class Game {
           }
         });
         this.io.emit('correctWordGuess', updateScores);
+        //TODO
         //this.nextTurn()
       }
       else {
@@ -174,6 +175,20 @@ class Game {
     }
   }
 
+
+  restartGame() {
+    // Reset game state
+    console.log("reset the game")
+    this.currentWord = ''; // Reset the current word
+    this.players.forEach((player) => {
+      player.score = 0; // Reset player scores
+    });
+    this.currentPlayerIndex = 0;
+    this.currentWordIndex = 0;
+    this.timer = 20;
+    this.startGame()
+    this.io.emit('roundStart')
+  }
   
     emitToAll(event, data) {
       this.players.forEach((player) => {

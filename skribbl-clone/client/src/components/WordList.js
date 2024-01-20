@@ -6,20 +6,8 @@ import io from 'socket.io-client';
 const socket = io('http://localhost:3001'); // Replace with your server URL
 
 function WordList() {
-  const [currentWord, setCurrentWord] = useState('');
+  // const [currentWord, setCurrentWord] = useState('');
   //const [guessValue, setGuessValue] = useState('');
-
-  useEffect(() => {
-    // Listen for updates on the current word from the server
-    socket.on('currentWord', (word) => {
-      setCurrentWord(word);
-    });
-
-    // Cleanup function
-    return () => {
-      socket.off('currentWord');
-    };
-  }, []);
 
   const handleGuess = (event) => {
     // Send the player's guess to the server
@@ -32,7 +20,6 @@ function WordList() {
   return (
     <div>
       <h2>Guess the Word</h2>
-      <p>Current Word: {currentWord}</p>
       {/* Add UI for inputting and submitting guesses */}
       <form id = "guessForm" onSubmit={handleGuess}>
         <input

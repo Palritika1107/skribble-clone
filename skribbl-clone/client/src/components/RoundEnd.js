@@ -15,9 +15,14 @@ function RoundEnd() {
       setWinner(player);
     });
 
+    socket.on('roundStart',()=>{
+      setRoundEnd(false)
+    })
+
     // Cleanup function
     return () => {
       socket.off('roundEnd');
+      socket.off('roundStart')
     };
   }, []);
 

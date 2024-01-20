@@ -13,9 +13,14 @@ function RestartGame() {
       setShowRestartButton(show);
     });
 
+    socket.on('roundStart',()=>{
+      setShowRestartButton(false)
+    })
+
     // Cleanup function
     return () => {
       socket.off('showRestartButton');
+      socket.off('roundStart')
     };
   }, []);
 

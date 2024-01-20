@@ -12,10 +12,16 @@ function CurrentWord() {
     socket.on('updateCurrentWord', (word) => {
       setCurrentWord(word);
     });
+    
+    socket.on('gameRestarted', (currWord) => {
+      setCurrentWord(currWord);
+      console.log(currentWord)
+    });
 
     // Cleanup function
     return () => {
       socket.off('updateCurrentWord');
+      socket.off('gameRestarted');
     };
   }, []);
 

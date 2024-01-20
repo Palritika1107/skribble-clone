@@ -10,6 +10,7 @@ function PlayerList() {
   useEffect(() => {
     // Listen for updates on the player list from the server
     socket.on('updatePlayerList', (playerList) => {
+      console.log(playerList)
       setPlayers(playerList);
     });
 

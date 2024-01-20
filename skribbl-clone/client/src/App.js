@@ -44,8 +44,6 @@ function App() {
     socket.on('updatePlayerList', (updatedPlayers) => {
       setPlayers(updatedPlayers);
     });
-
-
   };
 
 
@@ -57,7 +55,7 @@ function App() {
     });
 
     return () => {
-      //socket.disconnect();
+      //socket.disconnect();s
     };
   }, []);
 
@@ -79,7 +77,7 @@ function App() {
           <DrawingBoard username={username} players={players} />
           <WordList />
           
-          <GameStatus />
+          {/* <GameStatus /> */}
           <Timer />
           <Scoring />
           <RoundEnd />
