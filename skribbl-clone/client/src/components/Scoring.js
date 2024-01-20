@@ -11,7 +11,7 @@ function Scoring() {
     socket.on('correctWordGuess', (updatedPlayers) => {
       // Update the player scores
       console.log("player", updatedPlayers)
-      //setPlayers(updatedPlayers);
+      setPlayers(updatedPlayers);
     });
 
     // Cleanup event listener on component unmount
@@ -24,13 +24,13 @@ function Scoring() {
   return (
     <div>
       <p>Players and Scores:</p>
-      {/* <ul>
+      <ul>
         {players.map((player) => (
           <li key={player.id}>
-            {player.username}: {player.score}
+            {player.name}: {player.score}
           </li>
         ))}
-      </ul> */}
+      </ul>
     </div>
   );
 }

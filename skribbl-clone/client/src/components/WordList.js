@@ -22,7 +22,7 @@ function WordList() {
   const handleGuess = (event) => {
     // Send the player's guess to the server
     event.preventDefault();
-    socket.emit('guess', event.target.guessedWord.value);
+    socket.emit('guessWord', event.target.guessedWord.value);
   };
 
   return (

@@ -41,6 +41,7 @@ class Game {
       this.sendPlayerTurn();
       this.sendNewWord();
       this.startTurnTimer();
+      this.handleWordGuess('')
     }
   
     endGame() {
@@ -87,6 +88,7 @@ class Game {
         this.sendNewWord();
         this.timer = 20;
         this.startTurnTimer();
+        this.handleWordGuess('');
       }
     }
   
@@ -125,33 +127,40 @@ class Game {
 
     handleWordGuess(guessedWord){
       var updateScores = [];
-      var that = this;
-      if (guessedWord.toLowerCase() === this.newWord.toLowerCase()) {
-        that.players.map(({name,score},idx)=>{
+      if (guessedWord && guessedWord.toLowerCase() === this.newWord.toLowerCase()) {
+        this.players.map(({id, name,score},idx)=>{
           if (name === this.currentPlayer){
             let obj = {
+              id:id,
               name: name,
               score: score+1
             }
             updateScores.push(obj)
-            that.players[idx].score = score + 1
+            this.players[idx].score = score + 1
           }
-        })
-        //let updateScore = this.players
-        //console.log(this.players)
-        //console.log(that.players)
-        console.log(updateScores)
-        that.emitToAll('correctWordGuess',that.players)
-          // Send the updated player list with scores to all clients
-
+          else{
+            let obj = {
+              id: id,
+              name: name,
+              score: score
+            }
+            updateScores.push(obj)
+          }
+        });
+        this.io.emit('correctWordGuess', updateScores);
       }
       else {
-        console.log("wrong guess")
-        //this.emitToAll('correctWordGuess', { isCorrect: false });
-        //this.io.to('roomName').emit('updateGameStatus', { message: `${currentPlayer.username} guessed incorrectly` });
-      }
-
+        this.players.map(({id, name,score},idx)=>{
+            let obj = {
+              id:id,
+              name: name,
+              score: score
+            }
+            updateScores.push(obj)
+      })
+      this.io.emit('correctWordGuess', updateScores);
     }
+  }
 
   
     emitToAll(event, data) {

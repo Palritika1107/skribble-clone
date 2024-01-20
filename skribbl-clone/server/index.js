@@ -59,7 +59,7 @@ io.on('connection', (socket) => {
     // updateGameStatus();
   })
 
-  socket.on('guess',(guessedWord)=>{
+  socket.on('guessWord',( guessedWord)=>{
     //console.log(guessedWord);
     game.handleWordGuess(guessedWord)
     updateGameStatus();
