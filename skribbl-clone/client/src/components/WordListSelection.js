@@ -32,11 +32,11 @@ function WordListSelection() {
       <ul>
         {wordList.map((word) => (
           <li key={word} onClick={() => handleSelectWord(word)}>
-            {word}
+            <button>{word}</button>
           </li>
         ))}
       </ul>
-      {selectedWord && <p>You selected: {selectedWord}</p>}
+      <h4>{selectedWord && <p>You selected: {selectedWord}</p>}</h4>
     </div>
   );
 }

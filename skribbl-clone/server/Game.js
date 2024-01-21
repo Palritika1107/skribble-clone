@@ -42,6 +42,8 @@ class Game {
       this.sendNewWord();
       this.startTurnTimer();
       this.handleWordGuess('')
+      this.sendWordList()
+      this.sendWordHint()
     }
   
     endGame() {
@@ -102,6 +104,8 @@ class Game {
         this.timer = 20;
         this.startTurnTimer();
         this.handleWordGuess('');
+        this.sendWordList()
+        this.sendWordHint()
       }
     }
   
@@ -120,13 +124,13 @@ class Game {
   
     sendWordList() {
       const wordList = this.words.slice(this.currentWordIndex, this.currentWordIndex + 3);
-      this.emitToAll('updateWordList', wordList);
+      this.io.emit('wordList', wordList);
     }
   
     sendWordHint() {
       const currentWord = this.words[this.currentWordIndex];
-      const hint = currentWord.substring(0, 2) + '_'.repeat(currentWord.length - 2);
-      this.emitToAll('updateWordHint', hint);
+      const hint = currentWord.substring(0, 2) + ' _ '.repeat(currentWord.length - 2);
+      this.io.emit('wordHint', hint);
     }
   
     sendPlayerTurn() {
