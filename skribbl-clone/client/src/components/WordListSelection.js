@@ -1,8 +1,6 @@
 // src/components/WordListSelection.js
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
-
-const socket = io('http://localhost:3001'); // Replace with your server URL
+import socket from './Socket';// Replace with your server URL
 
 function WordListSelection() {
   const [wordList, setWordList] = useState([]);
@@ -11,6 +9,7 @@ function WordListSelection() {
   useEffect(() => {
     // Listen for updates on word list from the server
     socket.on('wordList', (list) => {
+      console.log("inside wordlist")
       setWordList(list);
     });
 

@@ -3,7 +3,7 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const Game = require('./Game');
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
 const io = require("socket.io")(server, {
   cors: {
@@ -16,10 +16,11 @@ server.listen(PORT);
 const game = new Game(io);
 
 io.on('connection', (socket) => {
-  // console.log('A user connected');
 
+  const userId = socket.id;
+  socket.userId = userId;
   socket.on('newPlayer', (player) => {
-    socket.join('roomName')
+    // socket.join('roomName')
     game.addPlayer(player);
 
     // Send initial game state to the player
@@ -35,7 +36,7 @@ io.on('connection', (socket) => {
 
   socket.on('submitName', (name) => {
     console.log("A Player connected: ", name);
-    game.addPlayer({ id: socket.id, name, score:0, socket });
+    game.addPlayer({ id: userId, name, score:0, socket });
     updateGameStatus();
   });
 
@@ -51,7 +52,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('draw', (data) => {
-    io.to('roomName').emit('draw', data); // Broadcast to all clients in the room
+    // io.to('roomName').emit('draw', data);
+     // Broadcast to all clients in the room
+
+     io.to.emit('draw', data);  
   });
 
   socket.on('newTurn',() =>{
@@ -60,7 +64,6 @@ io.on('connection', (socket) => {
   })
 
   socket.on('guessWord',( guessedWord)=>{
-    //console.log(guessedWord);
     game.handleWordGuess(guessedWord)
     updateGameStatus();
   })

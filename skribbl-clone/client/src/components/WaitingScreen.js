@@ -1,8 +1,6 @@
 // src/components/WaitingScreen.js
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
-
-const socket = io('http://localhost:3001'); // Replace with your server URL
+import socket from './Socket'; // Replace with your server URL
 
 function WaitingScreen() {
   const [waiting, setWaiting] = useState(true);

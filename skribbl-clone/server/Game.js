@@ -1,4 +1,5 @@
 // server/Game.js
+// To debug socket issue https://socket.io/docs/v3/troubleshooting-connection-issues/
 class Game {
   constructor(io) {
     this.io = io;
@@ -124,7 +125,8 @@ class Game {
   
     sendWordList() {
       const wordList = this.words.slice(this.currentWordIndex, this.currentWordIndex + 3);
-      this.io.emit('wordList', wordList);
+      const currentPlayer= this.getCurrentPlayer()
+      currentPlayer.socket.emit('wordList', wordList);
     }
   
     sendWordHint() {
@@ -139,7 +141,12 @@ class Game {
     }
   
     sendTimerUpdate() {
+      // not used in client and not working
       this.emitToAll('updateTimer', this.timer);
+    }
+
+    getCurrentPlayer(){
+      return this.players[this.currentPlayerIndex]
     }
 
     handleWordGuess(guessedWord){
@@ -195,12 +202,17 @@ class Game {
     this.startGame()
     this.io.emit('roundStart')
   }
-  
-    emitToAll(event, data) {
-      this.players.forEach((player) => {
+
+  emitToAll(event, data) {
+    console.log(`Emitting ${event} to all players`);
+    this.players.forEach((player) => {
+      if (player.socket) {
+        console.log(`Emitting to player ${player.name}`);
         player.socket.emit(event, data);
-      });
-    }
+      }
+    });
+  }
+  
   }
   
   module.exports = Game;

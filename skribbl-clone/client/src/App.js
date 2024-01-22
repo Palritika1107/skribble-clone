@@ -1,6 +1,5 @@
 // src/App.js
 import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
 import DrawingBoard from './components/DrawingBoard';
 import WordList from './components/WordList';
 import PlayerList from './components/PlayerList';
@@ -20,7 +19,7 @@ import PlayerConnectionStatus from './components/PlayerConnectionStatus';
 import RoundEnd from './components/RoundEnd';
 // import LoginPage from './components/LoginPage';
 
-const socket = io('http://localhost:3001'); // Replace with your server URL
+import socket from './components/Socket'; // Replace with your server URL
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
