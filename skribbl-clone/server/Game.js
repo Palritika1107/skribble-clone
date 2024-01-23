@@ -124,29 +124,25 @@ class Game {
     }
   
     sendWordList() {
-      const wordList = this.words.slice(this.currentWordIndex, this.currentWordIndex + 3);
-      const currentPlayer= this.getCurrentPlayer()
-      currentPlayer.socket.emit('wordList', wordList);
+      const wordList = this.words.slice(this.currentWordIndex, this.currentWordIndex + 3);  
+      this.emitDifferently('wordList', wordList)
     }
   
     sendWordHint() {
       const currentWord = this.words[this.currentWordIndex];
       const hint = currentWord.substring(0, 2) + ' _ '.repeat(currentWord.length - 2);
-      this.io.emit('wordHint', hint);
+      this.emitDifferently('wordHint', hint);
     }
   
     sendPlayerTurn() {
       this.currentPlayer = this.players[this.currentPlayerIndex].name;
+      this.currentPlayerID = this.players[this.currentPlayerIndex].id;
       this.io.emit('playerTurn', this.currentPlayer);
     }
   
     sendTimerUpdate() {
       // not used in client and not working
       this.emitToAll('updateTimer', this.timer);
-    }
-
-    getCurrentPlayer(){
-      return this.players[this.currentPlayerIndex]
     }
 
     handleWordGuess(guessedWord){
@@ -212,8 +208,18 @@ class Game {
       }
     });
   }
-  
+
+  emitDifferently(event, data){
+  this.players.forEach((player) => {
+    if(player.id == this.currentPlayerID){
+      player.socket.emit(event, data)
+    }
+    else{
+      player.socket.emit(event, null)
+    }
+  });
   }
-  
+
+}
   module.exports = Game;
   

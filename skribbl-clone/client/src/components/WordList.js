@@ -1,5 +1,4 @@
 // src/components/WordList.js
-import e from 'cors';
 import React, { useState, useEffect } from 'react';
 import socket from './Socket'; // Replace with your server URL
 

@@ -6,11 +6,12 @@ function WordListSelection() {
   const [wordList, setWordList] = useState([]);
   const [selectedWord, setSelectedWord] = useState('');
 
+
   useEffect(() => {
     // Listen for updates on word list from the server
     socket.on('wordList', (list) => {
       console.log("inside wordlist")
-      setWordList(list);
+        setWordList(list)
     });
 
     // Cleanup function
@@ -26,7 +27,7 @@ function WordListSelection() {
   };
 
   return (
-    <div>
+      wordList ? (<div>
       <h2>Select a Word</h2>
       <ul>
         {wordList.map((word) => (
@@ -36,7 +37,7 @@ function WordListSelection() {
         ))}
       </ul>
       <h4>{selectedWord && <p>You selected: {selectedWord}</p>}</h4>
-    </div>
+    </div>) : <></>
   );
 }
 

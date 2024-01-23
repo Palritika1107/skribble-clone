@@ -18,6 +18,7 @@ function WordHint() {
   }, []);
 
   return (
+    wordHint ? (
     <div>
       {wordHint && (
         <div>
@@ -25,7 +26,7 @@ function WordHint() {
           <p>{wordHint}</p>
         </div>
       )}
-    </div>
+    </div>) : <></>
   );
 }
 
