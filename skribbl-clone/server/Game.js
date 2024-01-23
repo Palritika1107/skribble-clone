@@ -200,10 +200,10 @@ class Game {
   }
 
   emitToAll(event, data) {
-    console.log(`Emitting ${event} to all players`);
+    //console.log(`Emitting ${event} to all players`);
     this.players.forEach((player) => {
       if (player.socket) {
-        console.log(`Emitting to player ${player.name}`);
+        //console.log(`Emitting to player ${player.name}`);
         player.socket.emit(event, data);
       }
     });
@@ -218,6 +218,22 @@ class Game {
       player.socket.emit(event, null)
     }
   });
+  }
+
+  emitDrawing(data){
+    //console.log(this.currentPlayer, " is drawing", data)
+    this.players.forEach((player) => {
+      if(player.id != this.currentPlayerID){
+        console.log("emiting to", player.name)
+        player.socket.emit('drawing', data)
+    }});
+  }
+
+  emitNewStroke(){
+    this.players.forEach((player) => {
+      if(player.id != this.currentPlayerID){
+        player.socket.emit('newStroke')
+    }});
   }
 
 }

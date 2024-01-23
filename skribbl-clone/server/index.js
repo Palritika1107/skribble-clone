@@ -54,8 +54,11 @@ io.on('connection', (socket) => {
   socket.on('draw', (data) => {
     // io.to('roomName').emit('draw', data);
      // Broadcast to all clients in the room
+    game.emitDrawing(data)
+  });
 
-     io.to.emit('draw', data);  
+  socket.on('newPath',()=>{
+    game.emitNewStroke();
   });
 
   socket.on('newTurn',() =>{

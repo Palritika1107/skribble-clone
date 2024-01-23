@@ -10,7 +10,6 @@ function WordListSelection() {
   useEffect(() => {
     // Listen for updates on word list from the server
     socket.on('wordList', (list) => {
-      console.log("inside wordlist")
         setWordList(list)
     });
 
