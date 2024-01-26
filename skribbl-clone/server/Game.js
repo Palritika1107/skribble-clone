@@ -40,11 +40,9 @@ class Game {
     startGame() {
       this.io.emit('gameStarted', true);
       this.sendPlayerTurn();
-      this.sendNewWord();
-      this.startTurnTimer();
+      // this.sendNewWord();
       this.handleWordGuess('')
       this.sendWordList()
-      this.sendWordHint()
     }
   
     endGame() {
@@ -101,13 +99,21 @@ class Game {
         return;
       } else {
         this.sendPlayerTurn();
-        this.sendNewWord();
+        // this.sendNewWord();
         this.timer = 20;
-        this.startTurnTimer();
+        //this.startTurnTimer();
         this.handleWordGuess('');
         this.sendWordList()
-        this.sendWordHint()
       }
+    }
+
+    selectWord(word) {
+      this.newWord = word;
+      console.log(word)
+      this.emitDifferently('updateCurrentWord', this.newWord);
+      this.emitToNonCurrentPlayer('showGuessForm',true)
+      this.sendWordHint()
+      this.startTurnTimer();
     }
   
     sendNewWord() {
@@ -126,12 +132,13 @@ class Game {
     sendWordList() {
       const wordList = this.words.slice(this.currentWordIndex, this.currentWordIndex + 3);  
       this.emitDifferently('wordList', wordList)
+      this.emitToAll('updateCurrentWord', null)
+      this.emitToAll('wordHint',null)
     }
   
     sendWordHint() {
-      const currentWord = this.words[this.currentWordIndex];
-      const hint = currentWord.substring(0, 2) + ' _ '.repeat(currentWord.length - 2);
-      this.emitDifferently('wordHint', hint);
+      const hint = this.newWord.substring(0, 2) + ' _ '.repeat(this.newWord.length - 2);
+      this.emitToAll('wordHint', hint);
     }
   
     sendPlayerTurn() {
@@ -145,11 +152,11 @@ class Game {
       this.emitToAll('updateTimer', this.timer);
     }
 
-    handleWordGuess(guessedWord){
+    handleWordGuess(guessedWord, socketID){
       var updateScores = [];
       if (guessedWord && guessedWord.toLowerCase() === this.newWord.toLowerCase()) {
         this.players.map(({id, name,score},idx)=>{
-          if (name === this.currentPlayer){
+          if (id === socketID){
             let obj = {
               id:id,
               name: name,
@@ -220,11 +227,22 @@ class Game {
   });
   }
 
+  emitToNonCurrentPlayer(event,data){
+    this.players.forEach((player) => {
+      if(player.id != this.currentPlayerID){
+        player.socket.emit(event, data)
+      }
+      else{
+        player.socket.emit(event, null)
+      }
+    });
+  }
+
   emitDrawing(data){
     //console.log(this.currentPlayer, " is drawing", data)
     this.players.forEach((player) => {
       if(player.id != this.currentPlayerID){
-        console.log("emiting to", player.name)
+        //console.log("emiting to", player.name)
         player.socket.emit('drawing', data)
     }});
   }

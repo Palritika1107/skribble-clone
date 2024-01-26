@@ -11,6 +11,11 @@ function WordHint() {
       setWordHint(hint);
     });
 
+    // socket.on('wordList',(wordList)=>{
+    //   setWordHint(wordList);
+    // })
+
+
     // Cleanup function
     return () => {
       socket.off('wordHint');

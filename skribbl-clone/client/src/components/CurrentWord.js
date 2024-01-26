@@ -16,22 +16,26 @@ function CurrentWord() {
       console.log(currentWord)
     });
 
+    // socket.on('wordList',(wordList)=>{
+    //   setCurrentWord(wordList);
+    // })
+
     // Cleanup function
     return () => {
       socket.off('updateCurrentWord');
       socket.off('gameRestarted');
+      //socket.off('wordList')
     };
-  }, []);
+  }, [currentWord]);
 
   return (
-    <div>
-      {currentWord && (
+      currentWord ? (
         <div>
           <h2>Current Word</h2>
           <p>{currentWord}</p>
         </div>
-      )}
-    </div>
+      ): 
+      <></>
   );
 }
 

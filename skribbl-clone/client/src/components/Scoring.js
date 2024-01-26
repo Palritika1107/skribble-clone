@@ -21,11 +21,11 @@ function Scoring() {
   // Render UI using the players and their scores
   return (
     <div>
-      <p>Players and Scores:</p>
+      <h2>Players and Scores:</h2>
       <ul>
         {players.map((player) => (
           <li key={player.id}>
-            {player.name}: {player.score}
+            {player.name}{socket.id === player.id ? " (You)":<></>}: {player.score}
           </li>
         ))}
       </ul>

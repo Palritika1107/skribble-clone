@@ -55,6 +55,12 @@ li {
   color: #4caf50;
 }
 
+.CurrentWord {
+  padding-top: 200px;
+}
+.Scoring {  
+  padding-left: 100px;
+}
 .TurnTimer p {
   font-weight: bold;
 }

@@ -66,14 +66,18 @@ io.on('connection', (socket) => {
     // updateGameStatus();
   })
 
-  socket.on('guessWord',( guessedWord)=>{
-    game.handleWordGuess(guessedWord)
+  socket.on('guessWord',( {guessedWord, socketID})=>{
+    game.handleWordGuess(guessedWord, socketID)
     updateGameStatus();
   })
 
   socket.on('restartGame',()=>{
     game.restartGame()
     updateGameStatus()
+  })
+
+  socket.on('selectWord',(word)=>{
+    game.selectWord(word)
   })
 
 });

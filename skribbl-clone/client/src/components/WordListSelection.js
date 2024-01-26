@@ -1,16 +1,17 @@
 // src/components/WordListSelection.js
 import React, { useState, useEffect } from 'react';
+import WordListSelectionModal from './WordListModal';
 import socket from './Socket';// Replace with your server URL
 
 function WordListSelection() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [wordList, setWordList] = useState([]);
-  const [selectedWord, setSelectedWord] = useState('');
-
 
   useEffect(() => {
     // Listen for updates on word list from the server
     socket.on('wordList', (list) => {
-        setWordList(list)
+      setWordList(list);
+      setIsModalOpen(true)
     });
 
     // Cleanup function
@@ -19,25 +20,18 @@ function WordListSelection() {
     };
   }, []);
 
-  const handleSelectWord = (word) => {
-    // Emit a selected word to the server
-    socket.emit('selectWord', word);
-    setSelectedWord(word);
+
+  const handleCloseModal = () => {
+    
+    setIsModalOpen(false);
   };
 
   return (
-      wordList ? (<div>
-      <h2>Select a Word</h2>
-      <ul>
-        {wordList.map((word) => (
-          <li key={word} onClick={() => handleSelectWord(word)}>
-            <button>{word}</button>
-          </li>
-        ))}
-      </ul>
-      <h4>{selectedWord && <p>You selected: {selectedWord}</p>}</h4>
-    </div>) : <></>
+    wordList ? 
+    <div>
+      <WordListSelectionModal isOpen={isModalOpen} onClose={handleCloseModal} wordList={wordList}/>
+    </div> : <> </>
   );
-}
+};
 
 export default WordListSelection;

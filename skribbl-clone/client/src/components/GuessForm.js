@@ -6,17 +6,30 @@ function WordList() {
   // const [currentWord, setCurrentWord] = useState('');
   //const [guessValue, setGuessValue] = useState('');
 
+  const [showForm, setShowForm] = useState(false);
+
+  useEffect(()=>{
+    socket.on('showGuessForm', (value)=>{
+      setShowForm(value)
+    })
+
+    return () => {
+      socket.off('showGuessForm')
+    }
+  })
+
+
   const handleGuess = (event) => {
     // Send the player's guess to the server
     event.preventDefault();
     console.log(socket)
-    socket.emit('guessWord', event.target.guessedWord.value);
+    socket.emit('guessWord', {guessedWord: event.target.guessedWord.value, socketID: socket.id});
     // setGuessValue('')
   };
   
   
 
-  return (
+  return ( showForm ? (
     <div>
       <h2>Guess the Word</h2>
       {/* Add UI for inputting and submitting guesses */}
@@ -31,7 +44,7 @@ function WordList() {
 
       </form>
       
-    </div>
+    </div>) : <></>
   );
 }
 
