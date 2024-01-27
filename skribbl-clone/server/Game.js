@@ -73,16 +73,10 @@ class Game {
 
       if (this.timer <= 0) {
         clearInterval(intervalId);
+        this.sendTimerUpdate();
         this.nextTurn();
       }
-      console.log(this.timer);
-      this.sendTimerUpdate();
     }, 1000);
-
-    setTimeout(() => {
-      clearInterval(intervalId);
-      this.nextTurn();
-    }, this.timer * 1000);
   }
 
   nextTurn() {
@@ -185,6 +179,7 @@ class Game {
       });
       this.emitToAll("correctWordGuess", updateScores);
       //TODO
+      this.timer = 0
     } else {
       this.players.map(({ id, name, score }, idx) => {
         let obj = {

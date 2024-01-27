@@ -14,6 +14,10 @@ function Timer() {
       setSecondsRemaining(20);
     });
 
+    socket.on('updateTimer',() =>{
+      setSecondsRemaining(0)
+    })
+
     // Start the timer
     if (secondsRemaining > 0) {
       timer = setInterval(() => {
@@ -35,6 +39,7 @@ function Timer() {
     return () => {
       clearInterval(timer);
       socket.off('roundUpdate');
+      socket.off('updateTimer')
     };
   }, [secondsRemaining]);
 
