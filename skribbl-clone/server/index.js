@@ -80,6 +80,10 @@ io.on('connection', (socket) => {
     game.selectWord(word)
   })
 
+  socket.on('clearDrawing', ()=>{
+    game.clearDrawingBoard()
+  })
+
 });
 
 function updateGameStatus() {

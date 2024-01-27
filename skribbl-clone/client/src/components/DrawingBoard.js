@@ -34,12 +34,17 @@ function DrawingBoard() {
         }
     })
 
+    socket.on('clearDrawingForAll', ()=>{
+      const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    })
+
     const startDrawing = (event) => {
       if (allowDrawing){
         setIsDrawing(true);
         draw(event);
       }
-      
     };
 
     const stopDrawing = () => {
@@ -104,7 +109,10 @@ function DrawingBoard() {
   return (
     <div>
       <canvas ref={canvasRef} width={800} height={500} style={{ border: '1px solid #000000' }}></canvas>
-      <button onClick={handleClearDrawing}>Clear Drawing Board</button>
+      {
+        allowDrawing ? <button onClick={handleClearDrawing}>Clear Drawing Board</button> : <></>
+      }
+      
     </div>
   );
 }

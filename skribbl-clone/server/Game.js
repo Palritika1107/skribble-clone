@@ -63,7 +63,7 @@ class Game {
     }
 
     clearDrawingBoard() {
-      this.emitToAll('clearDrawing');
+      this.emitToAll('clearDrawingForAll');
     }
   
     startTurnTimer() {
