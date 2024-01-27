@@ -63,10 +63,10 @@ function App() {
                 <WordHint />
               </div>
             </div>
-            
+
             <CurrentWord />
             <CorrectGuessHandling />
-            
+
             <WordListSelection />
 
             <DrawingBoard />

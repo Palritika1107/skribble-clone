@@ -1,19 +1,19 @@
 // src/components/PlayerTurnMessage.js
-import React, { useState, useEffect } from 'react';
-import socket from './Socket'; // Replace with your server URL
+import React, { useState, useEffect } from "react";
+import socket from "./Socket"; // Replace with your server URL
 
 function PlayerTurnMessage() {
   const [playerTurn, setPlayerTurn] = useState(null);
 
   useEffect(() => {
     // Listen for updates on the current player's turn from the server
-    socket.on('playerTurn', ({name: playerName}) => {
+    socket.on("playerTurn", ({ name: playerName }) => {
       setPlayerTurn(playerName);
     });
 
     // Cleanup function
     return () => {
-      socket.off('playerTurn');
+      socket.off("playerTurn");
     };
   }, []);
 
