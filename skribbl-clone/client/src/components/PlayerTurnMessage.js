@@ -7,8 +7,8 @@ function PlayerTurnMessage() {
 
   useEffect(() => {
     // Listen for updates on the current player's turn from the server
-    socket.on('playerTurn', (player) => {
-      setPlayerTurn(player);
+    socket.on('playerTurn', ({name: playerName}) => {
+      setPlayerTurn(playerName);
     });
 
     // Cleanup function

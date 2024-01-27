@@ -2,15 +2,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import socket from './Socket'; // Replace with your server URL
 
-function DrawingBoard({ username }) {
+function DrawingBoard() {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [allowDrawing , setAllowDrawing] = useState(false);
+
   const handleClearDrawing = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
     socket.emit('clearDrawing');
   };
+
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
@@ -21,9 +25,21 @@ function DrawingBoard({ username }) {
     context.lineWidth = 5;
     context.strokeStyle = '#990000';
 
+    socket.on('playerTurn', ({id: currentPlayerID}) => {
+        if (socket.id === currentPlayerID){
+          setAllowDrawing(true);
+        }
+        else{
+          setAllowDrawing(false)
+        }
+    })
+
     const startDrawing = (event) => {
-      setIsDrawing(true);
-      draw(event);
+      if (allowDrawing){
+        setIsDrawing(true);
+        draw(event);
+      }
+      
     };
 
     const stopDrawing = () => {
@@ -61,7 +77,6 @@ function DrawingBoard({ username }) {
     canvas.addEventListener('mouseout', stopDrawing);
 
     socket.on('drawing', (data) => {
-      console.log("drawing")
       context.strokeStyle = data.color;
       context.lineWidth = data.lineWidth;
       context.lineTo(data.x, data.y);
@@ -84,7 +99,7 @@ function DrawingBoard({ username }) {
       socket.off('drawing')
       socket.off('newStroke')
     };
-  }, [isDrawing, username]);
+  }, [isDrawing, allowDrawing]);
 
   return (
     <div>

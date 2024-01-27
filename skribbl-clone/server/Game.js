@@ -142,9 +142,9 @@ class Game {
     }
   
     sendPlayerTurn() {
-      this.currentPlayer = this.players[this.currentPlayerIndex].name;
+      this.currentPlayerName = this.players[this.currentPlayerIndex].name;
       this.currentPlayerID = this.players[this.currentPlayerIndex].id;
-      this.io.emit('playerTurn', this.currentPlayer);
+      this.io.emit('playerTurn', {name: this.currentPlayerName, id: this.currentPlayerID} );
     }
   
     sendTimerUpdate() {

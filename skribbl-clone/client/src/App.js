@@ -23,26 +23,15 @@ import socket from "./components/Socket"; // Replace with your server URL
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState("");
-  const [players, setPlayers] = useState([]);
+  const [newPlayer, setNewPlayer] = useState("");
+  //const [players, setPlayers] = useState([]);
 
   const handleLogin = (user) => {
     setIsLoggedIn(true);
-    setUsername(user);
+    setNewPlayer(user);
 
     // Inform the server that a new player has joined
-    socket.emit("newPlayer", user);
-
-    // Listen for initial game state from the server
-    socket.on("initialGameState", (initialState) => {
-      setPlayers(initialState.players);
-      // Additional logic to handle initial game state (current player, current word, timer, etc.)
-    });
-
-    // Listen for updated player list from the server
-    socket.on("updatePlayerList", (updatedPlayers) => {
-      setPlayers(updatedPlayers);
-    });
+    socket.emit("newPlayer", newPlayer);
   };
 
   useEffect(() => {
@@ -52,7 +41,7 @@ function App() {
     });
 
     return () => {
-      //socket.disconnect();s
+      //socket.disconnect();
     };
   }, []);
 
@@ -80,7 +69,7 @@ function App() {
             
             <WordListSelection />
 
-            <DrawingBoard username={username} players={players} />
+            <DrawingBoard />
             <GuessForm />
 
             {/* <GameStatus /> */}
