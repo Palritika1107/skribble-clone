@@ -25,6 +25,8 @@ function DrawingBoard() {
     context.strokeStyle = "#990000";
 
     socket.on("playerTurn", ({ id: currentPlayerID }) => {
+      //Cleear drawing as it could be new round
+      handleClearDrawing()
       if (socket.id === currentPlayerID) {
         setAllowDrawing(true);
       } else {
