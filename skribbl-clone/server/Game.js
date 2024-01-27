@@ -47,16 +47,27 @@ class Game {
 
   endGame() {
     // Handle end of the game logic
-    let tempScore = 0;
-    let player = "";
+    let highScore = 0;
+    let winners = []
     this.players.map(({ id, name, score }, idx) => {
-      if (tempScore < score) {
-        tempScore = score;
-        player = name;
+      if (score > highScore) {
+        winners = []
+        highScore = score;
+        winners.push(name)
+      }
+      else if (score == highScore){
+        winners.push(name)
       }
     });
 
-    this.io.emit("roundEnd", [player]);
+    if (winners.length === this.players.length) {
+      winners = ''
+    }
+    else{
+      winners = winners.join(', ')
+    }
+    console.log(winners)
+    this.io.emit("roundEnd", winners);
     this.io.emit("showRestartButton", true);
     this.io.emit("gameOver", true);
     this.gameStarted = false;

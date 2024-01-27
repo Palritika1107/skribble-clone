@@ -4,13 +4,13 @@ import socket from './Socket'; // Replace with your server URL
 
 function RoundEnd() {
   const [roundEnd, setRoundEnd] = useState(false);
-  const [winner, setWinner] = useState([]);
+  const [winner, setWinner] = useState();
 
   useEffect(() => {
     // Listen for updates on round end from the server
-    socket.on('roundEnd', (player) => {
+    socket.on('roundEnd', (winners) => {
       setRoundEnd(true);
-      setWinner(player);
+      setWinner(winners);
     });
 
     socket.on('roundStart',()=>{
@@ -25,14 +25,15 @@ function RoundEnd() {
   }, []);
 
   return (
-    <div>
-      {roundEnd && (
+
+      roundEnd ? (
         <div>
           <h2>Round Over!</h2>
-          <p>Winner: {winner}</p>
+          {winner && <p>Winner: {winner}</p> }
+          {!winner && <p>Draw Match</p>}
         </div>
-      )}
-    </div>
+      ) : <></>
+
   );
 }
 
